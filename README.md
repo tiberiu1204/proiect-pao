@@ -1,25 +1,3 @@
-Lista de actiuni/interogari pentru aplicatia de programari medicale:
-
-1. Adaugarea unui pacient nou in sistem
-
-2. Vizualizarea listei tuturor pacientilor
-
-3. Stergerea unui pacient din sistem
-
-4. Modificarea informatiilor unui pacient existent
-
-5. Programarea unei consultatii medicale pentru un pacient
-
-6. Vizualizarea programarilor existente pentru un anumit pacient
-
-7. Anularea unei programari existente
-
-8. Adaugarea unui medic nou in sistem
-
-9. Vizualizarea tuturor programarilor pentru un anumit medic
-
-10. Cautarea programarilor dupa data sau interval de timp
-
 Lista de tipuri de obiecte (entitati):
 
 1. Pacient
@@ -28,16 +6,36 @@ Lista de tipuri de obiecte (entitati):
 
 3. Programare
 
-4. Specializare medicala
+4. Clinica
 
-5. Cabinet medical
+5. Orar disponibil / Calendar (pentru medici)
 
-6. Orar disponibil (pentru medici)
+6. Camera
 
-7. Tip consultatie (ex: control de rutina, urgenta, etc.)
+7. Fisa medicala
 
-8. Asistent medical
+8. Boala
 
-9. Fisa medicala
+`Lista de actiuni/interogari pentru aplicatia de programari medicale`:
+
+1. Programarea unei consultatii
+
+2. Vizualizarea listei tuturor medicilor
+
+3. Vizualizarea listei clinicilor disponibile
+
+4. Modificarea unei programari deja existente
+
+5. Anularea unei programari
+
+6. Inregistrare pacient nou
+
+7. Vizualizarea listei tuturor pacientilor care au vizitat un anumit medic
+
+8. Adaugarea unui medic nou in sistem
+
+9. Vizualizarea tuturor programarilor pentru un anumit medic
+
+10. Vizualizarea tuturor programarilor pentru un anumit pacient
 
 
