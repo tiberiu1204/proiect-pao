@@ -30,4 +30,35 @@ public class Appointment {
         this.clinique = clinique;
         this.roomNumber = roomNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "medic=" + medic +
+                ", id=" + id +
+                ", date=" + date +
+                ", disease=" + disease +
+                ", cost=" + cost +
+                ", clinique=" + clinique +
+                ", roomNumber=" + roomNumber +
+                ", durationMinutes=" + durationMinutes +
+                ", type=" + type +
+                '}';
+    }
+
+    public Medic getMedic() {
+        return medic;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    public void setDate(Date newDate) {
+        this.date = newDate;
+    }
 }

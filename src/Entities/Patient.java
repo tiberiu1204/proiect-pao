@@ -12,4 +12,12 @@ public class Patient extends Person {
         this.insured = insured;
         this.medFile = medFile;
     }
+
+    public MedFile getMedFile() {
+        return this.medFile;
+    }
+
+    public void addAppointment(Appointment appointment) {
+        medFile.addAppointment(appointment);
+    }
 }

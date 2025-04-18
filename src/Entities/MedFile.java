@@ -11,4 +11,12 @@ public class MedFile {
         this.appointmentHistory = appointmentHistory;
         this.registrationDate = registrationDate;
     }
+
+    public ArrayList<Appointment> getAppointmentHistory() {
+        return appointmentHistory;
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointmentHistory.add(appointment);
+    }
 }

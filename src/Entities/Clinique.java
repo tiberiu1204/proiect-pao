@@ -12,4 +12,9 @@ public class Clinique {
         this.address = address;
         this.rooms = rooms;
     }
+
+    @Override
+    public String toString() {
+        return name + ", " + address;
+    }
 }

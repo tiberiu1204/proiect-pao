@@ -44,7 +44,6 @@ public class CalendarRepo {
         Calendar calendar2 = new Calendar(9, 17, freeDays2, appointedDates2);
         Calendar calendar3 = new Calendar(10, 18, freeDays3, appointedDates3);
 
-        ArrayList<Calendar> calendars = new ArrayList<>();
         calendars.add(calendar1);
         calendars.add(calendar2);
         calendars.add(calendar3);

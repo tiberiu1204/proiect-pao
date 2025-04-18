@@ -19,7 +19,6 @@ public class DiseaseRepo {
         Disease disease2 = new Disease("Flu", DiseaseType.INFECTIOUS);
         Disease disease3 = new Disease("Osteoarthritis", DiseaseType.DEGENERATIVE);
 
-        ArrayList<Disease> diseases = new ArrayList<>();
         diseases.add(disease1);
         diseases.add(disease2);
         diseases.add(disease3);

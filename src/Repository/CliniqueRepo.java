@@ -30,13 +30,10 @@ public class CliniqueRepo {
         rooms3.add(rooms.get(0));
         rooms3.add(rooms.get(1));
 
-        // Creating 3 clinique instances
         Clinique clinique1 = new Clinique("City Hospital", "123 Iuliu Maniu", rooms1);
         Clinique clinique2 = new Clinique("Wellness Center", "456 Magheru", rooms2);
         Clinique clinique3 = new Clinique("Health Clinic", "789 Victoriei", rooms3);
 
-        // Adding clinics to an ArrayList
-        ArrayList<Clinique> clinics = new ArrayList<>();
         clinics.add(clinique1);
         clinics.add(clinique2);
         clinics.add(clinique3);

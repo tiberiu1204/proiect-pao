@@ -19,7 +19,6 @@ public class RoomRepo {
         Room room2 = new Room(RoomType.SURGERY, 2, 201);
         Room room3 = new Room(RoomType.EXAMINATION, 3, 301);
 
-        ArrayList<Room> rooms = new ArrayList<>();
         rooms.add(room1);
         rooms.add(room2);
         rooms.add(room3);

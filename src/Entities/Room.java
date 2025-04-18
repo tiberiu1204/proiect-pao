@@ -5,7 +5,7 @@ import src.Utils.RoomType;
 public class Room {
     private RoomType type;
     private int floor;
-    private int roomNumber;
+    private Integer roomNumber;
 
     public Room(RoomType type, int floor, int roomNumber) {
         this.type = type;
@@ -13,7 +13,7 @@ public class Room {
         this.roomNumber = roomNumber;
     }
 
-    public int getRoomNumber() {
+    public Integer getRoomNumber() {
         return roomNumber;
     }
 }

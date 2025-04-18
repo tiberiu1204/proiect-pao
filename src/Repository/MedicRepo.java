@@ -32,5 +32,9 @@ public class MedicRepo {
     public ArrayList<Medic> getMedics() {
         return medics;
     }
+
+    public void addMedic(Medic medic) {
+        medics.add(medic);
+    }
 }
     
