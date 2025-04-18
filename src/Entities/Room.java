@@ -12,4 +12,8 @@ public class Room {
         this.floor = floor;
         this.roomNumber = roomNumber;
     }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
 }

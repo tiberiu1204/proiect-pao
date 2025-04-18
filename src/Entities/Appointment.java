@@ -9,23 +9,25 @@ import java.util.Date;
 public class Appointment {
     private int id;
     private Medic medic;
-    private Patient patient;
     private Date date;
     private int durationMinutes;
     private AppointmentType type;
     private Disease disease;
     private double cost;
+    Clinique clinique;
+    int roomNumber;
 
-    public Appointment(Medic medic, Patient patient, Date date, int durationMinutes, AppointmentType type,
-                       Disease disease, double cost) {
+    public Appointment(Medic medic, Date date, int durationMinutes, AppointmentType type, Disease disease, double cost,
+                       Clinique clinique, int roomNumber) {
         this.id = AppointmentUtils.currentId;
         AppointmentUtils.currentId++;
         this.medic = medic;
-        this.patient = patient;
         this.date = date;
         this.durationMinutes = durationMinutes;
         this.type = type;
         this.disease = disease;
         this.cost = cost;
+        this.clinique = clinique;
+        this.roomNumber = roomNumber;
     }
 }
