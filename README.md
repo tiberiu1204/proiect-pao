@@ -28,11 +28,11 @@ Lista de tipuri de obiecte (entitati):
 
 5. Anularea unei programari
 
-6. Inregistrare pacient nou
+6. Verificarea disponibilitatii unui medic pentru un anumit interval orar
 
 7. Vizualizarea listei tuturor pacientilor care au vizitat un anumit medic
 
-8. Adaugarea unui medic nou in sistem
+8. Obtinerea primului interval orar liber pentru un medic
 
 9. Vizualizarea tuturor programarilor pentru un anumit medic
 

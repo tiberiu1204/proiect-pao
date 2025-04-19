@@ -3,6 +3,8 @@ package src.Repository;
 import src.Entities.*;
 import src.Utils.AppointmentType;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -33,9 +35,12 @@ public class AppointmentRepo {
         Room room1 = rooms.get(0);
         Room room2 = rooms.get(1);
 
-        Appointment appointment1 = new Appointment(medic1, new Date(), 30, AppointmentType.CONSULTATION, disease1, 100.0, clinique1, room1.getRoomNumber());
-        Appointment appointment2 = new Appointment(medic2, new Date(), 45, AppointmentType.CHECKUP, disease2, 150.0, clinique1, room2.getRoomNumber());
-        Appointment appointment3 = new Appointment(medic1, new Date(), 60, AppointmentType.SURGERY, disease1, 500.0, clinique1, room1.getRoomNumber());
+        Appointment appointment1 = new Appointment(medic1, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+                30, AppointmentType.CONSULTATION, disease1, 100.0, clinique1, room1.getRoomNumber());
+        Appointment appointment2 = new Appointment(medic2, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+                45, AppointmentType.CHECKUP, disease2, 150.0, clinique1, room2.getRoomNumber());
+        Appointment appointment3 = new Appointment(medic1, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
+                60, AppointmentType.SURGERY, disease1, 500.0, clinique1, room1.getRoomNumber());
 
         appointments.add(appointment1);
         appointments.add(appointment2);

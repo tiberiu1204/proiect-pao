@@ -2,14 +2,13 @@ package src.Entities;
 
 import src.Utils.AppointmentType;
 import src.Utils.AppointmentUtils;
-import src.Utils.DiseaseType;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Appointment {
     private int id;
     private Medic medic;
-    private Date date;
+    private LocalDateTime date;
     private int durationMinutes;
     private AppointmentType type;
     private Disease disease;
@@ -17,7 +16,7 @@ public class Appointment {
     Clinique clinique;
     int roomNumber;
 
-    public Appointment(Medic medic, Date date, int durationMinutes, AppointmentType type, Disease disease, double cost,
+    public Appointment(Medic medic, LocalDateTime date, int durationMinutes, AppointmentType type, Disease disease, double cost,
                        Clinique clinique, int roomNumber) {
         this.id = AppointmentUtils.currentId;
         AppointmentUtils.currentId++;
@@ -58,7 +57,7 @@ public class Appointment {
         return durationMinutes;
     }
 
-    public void setDate(Date newDate) {
+    public void setDate(LocalDateTime newDate) {
         this.date = newDate;
     }
 }

@@ -3,15 +3,15 @@ package src.Services;
 import src.Entities.Appointment;
 import src.Entities.Medic;
 import src.Entities.Patient;
-import src.Repository.MedicRepo;
+import src.Repository.PatientRepo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public interface MedicService {
-    boolean checkAvailability(Medic medic, int durationMinutes, Date date);
-    public void registerNewMedic(Medic medic, MedicRepo repo);
-    public ArrayList<Patient> getAllPatients(Medic medic);
-    public ArrayList<Appointment> getAllAppointments(Medic medic);
+    public boolean checkAvailability(Medic medic, int durationMinutes, LocalDateTime date);
+    public ArrayList<Patient> getAllPatients(Medic medic, PatientRepo patientRepo);
+    public ArrayList<Appointment> getAllAppointments(Medic medic, PatientRepo patientRepo);
     public ArrayList<Medic> getAllMedics();
+    public LocalDateTime getFirstAvailableTimeFrame(Medic medic, int durationMinutes);
 }

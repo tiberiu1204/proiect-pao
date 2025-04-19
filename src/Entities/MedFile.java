@@ -13,7 +13,7 @@ public class MedFile {
     }
 
     public ArrayList<Appointment> getAppointmentHistory() {
-        return appointmentHistory;
+        return this.appointmentHistory;
     }
 
     public void addAppointment(Appointment appointment) {

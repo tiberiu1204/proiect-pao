@@ -4,13 +4,13 @@ import src.Entities.*;
 import src.Repository.PatientRepo;
 import src.Utils.AppointmentType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public interface PatientService {
-    public void makeAppointment(Appointment appointment, Patient patient);
-    public void modifyAppointment(Appointment appointment, Date newDate);
-    public void cancelAppointment(Appointment appointment);
-    public void registerNewPatient(Patient patient, PatientRepo repo);
+    public Appointment makeAppointment(Medic medic, Patient patient, LocalDateTime date, int durationMinutes,
+                                AppointmentType type, Disease disease, double cost, Clinique clinique, int roomNumber);
+    public Appointment modifyAppointment(Patient patient, int appointmentId, LocalDateTime newDate);
+    public void cancelAppointment(Patient patient, int appointmentId);
     public ArrayList<Appointment> getAllAppointments(Patient patient);
 }

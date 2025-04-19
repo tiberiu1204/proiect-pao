@@ -1,50 +1,62 @@
 package src.Services;
 
-import src.Entities.Appointment;
-import src.Entities.Patient;
+import src.Entities.*;
 import src.Repository.AppointmentRepo;
 import src.Repository.PatientRepo;
+import src.Utils.AppointmentType;
 
-import java.nio.MappedByteBuffer;
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class PatientServiceImpl implements PatientService{
+
     @Override
-    public void makeAppointment(Appointment appointment, Patient patient) {
-        patient.addAppointment(appointment);
+    public Appointment makeAppointment(Medic medic, Patient patient, LocalDateTime date, int durationMinutes, AppointmentType type, Disease disease, double cost, Clinique clinique, int roomNumber) {
+        AppointmentService appointmentService = new AppointmentServiceImpl();
+        Appointment appointment = appointmentService.createAppointmentWithMedic(medic, date, durationMinutes, type,
+                disease, cost, clinique, roomNumber);
+        if(appointment != null) {
+            patient.addAppointment(appointment);
+            medic.makeAppointment(date, durationMinutes);
+            return appointment;
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
-    public void modifyAppointment(Appointment appointment, Date newDate) {
-        AppointmentRepo appointmentRepo = new AppointmentRepo();
-        ArrayList<Appointment> appointments = appointmentRepo.getAppointments();
+    public Appointment modifyAppointment(Patient patient, int appointmentId, LocalDateTime newDate) {
+        ArrayList<Appointment> appointments = patient.getMedFile().getAppointmentHistory();
         for(Appointment currentAppointment : appointments) {
-            if(appointment.getId() == currentAppointment.getId()) {
+            if(appointmentId == currentAppointment.getId()) {
                 MedicService medicService = new MedicServiceImpl();
-                if(medicService.checkAvailability(appointment.getMedic(), appointment.getDurationMinutes(), newDate)) {
-                    appointment.setDate(newDate);
+                if(medicService.checkAvailability(currentAppointment.getMedic(),
+                        currentAppointment.getDurationMinutes(), newDate)) {
+                    currentAppointment.setDate(newDate);
+                    return currentAppointment;
                 }
-                else {
-                    System.out.println("Medic " + appointment.getMedic() + " is not available for selected time frame");
-                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void cancelAppointment(Patient patient, int appointmentId) {
+        MedFile medFile = patient.getMedFile();
+        ArrayList<Appointment> appointmentHistory = medFile.getAppointmentHistory();
+        for(Appointment appointment : appointmentHistory) {
+            if(appointment.getId() == appointmentId) {
+                appointmentHistory.remove(appointment);
                 return;
             }
         }
     }
 
     @Override
-    public void cancelAppointment(Appointment appointment) {
-
-    }
-
-    @Override
-    public void registerNewPatient(Patient patient, PatientRepo repo) {
-
-    }
-
-    @Override
     public ArrayList<Appointment> getAllAppointments(Patient patient) {
-        return null;
+        MedFile medFile = patient.getMedFile();
+        return medFile.getAppointmentHistory();
     }
 }

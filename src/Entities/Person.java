@@ -43,6 +43,10 @@ public class Person implements Comparable<Person>{
     }
 
     public int getId() {
-        return id;
+        return this.id;
+    }
+
+    public Object getEmail() {
+        return this.email;
     }
 }
