@@ -1,3 +1,5 @@
+# Proiect PAO Popescu Tiberiu-Andrei grupa 252
+
 Lista de tipuri de obiecte (entitati):
 
 1. Pacient
@@ -16,7 +18,7 @@ Lista de tipuri de obiecte (entitati):
 
 8. Boala
 
-`Lista de actiuni/interogari pentru aplicatia de programari medicale`:
+Lista de actiuni/interogari pentru aplicatia de programari medicale:
 
 1. Programarea unei consultatii
 
