@@ -14,10 +14,9 @@ public class Person implements Comparable<Person>{
     private String email;
     private String address;
 
-    public Person(String firstName, String lastName, int age, Date birth, String phoneNumber, String email,
+    public Person(int id, String firstName, String lastName, int age, Date birth, String phoneNumber, String email,
                   String address) {
-        id = PersonUtils.currentId;
-        PersonUtils.currentId++;
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -48,5 +47,33 @@ public class Person implements Comparable<Person>{
 
     public Object getEmail() {
         return this.email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Date getBirth() {
+        return birth;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

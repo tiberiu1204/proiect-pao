@@ -6,13 +6,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Calendar {
+    private int id;
     private int startHour;
     private int endHour;
     private ArrayList<Integer> freeDaysThisYear;
     private HashMap<LocalDateTime, Integer> appointedDates;
 
-    public Calendar(int startHour, int endHour, ArrayList<Integer> freeDaysThisYear,
+    public Calendar(int id, int startHour, int endHour, ArrayList<Integer> freeDaysThisYear,
                     HashMap<LocalDateTime, Integer> appointedDates) {
+        this.id = id;
         this.startHour = startHour;
         this.endHour = endHour;
         this.freeDaysThisYear = freeDaysThisYear;
@@ -77,5 +79,13 @@ public class Calendar {
         }
 
         return true;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

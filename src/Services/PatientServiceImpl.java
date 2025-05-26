@@ -1,19 +1,22 @@
 package src.Services;
 
+import src.Config.DatabaseConfiguration;
 import src.Entities.*;
-import src.Repository.AppointmentRepo;
-import src.Repository.PatientRepo;
 import src.Utils.AppointmentType;
 
-import java.lang.reflect.Array;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class PatientServiceImpl implements PatientService{
+    private final DatabaseConfiguration db;
+    public PatientServiceImpl(DatabaseConfiguration db) {
+        this.db = db;
+    }
 
     @Override
-    public Appointment makeAppointment(Medic medic, Patient patient, LocalDateTime date, int durationMinutes, AppointmentType type, Disease disease, double cost, Clinique clinique, int roomNumber) {
-        AppointmentService appointmentService = new AppointmentServiceImpl();
+    public Appointment makeAppointment(Medic medic, Patient patient, LocalDateTime date, int durationMinutes, AppointmentType type, Disease disease, double cost, Clinique clinique, int roomNumber) throws SQLException {
+        AppointmentService appointmentService = new AppointmentServiceImpl(db);
         Appointment appointment = appointmentService.createAppointmentWithMedic(medic, date, durationMinutes, type,
                 disease, cost, clinique, roomNumber);
         if(appointment != null) {
@@ -31,7 +34,7 @@ public class PatientServiceImpl implements PatientService{
         ArrayList<Appointment> appointments = patient.getMedFile().getAppointmentHistory();
         for(Appointment currentAppointment : appointments) {
             if(appointmentId == currentAppointment.getId()) {
-                MedicService medicService = new MedicServiceImpl();
+                MedicService medicService = new MedicServiceImpl(db);
                 if(medicService.checkAvailability(currentAppointment.getMedic(),
                         currentAppointment.getDurationMinutes(), newDate)) {
                     currentAppointment.setDate(newDate);

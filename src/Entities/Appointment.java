@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class Appointment {
     private int id;
     private Medic medic;
+    private Patient patient;
     private LocalDateTime date;
     private int durationMinutes;
     private AppointmentType type;
@@ -16,10 +17,9 @@ public class Appointment {
     Clinique clinique;
     int roomNumber;
 
-    public Appointment(Medic medic, LocalDateTime date, int durationMinutes, AppointmentType type, Disease disease, double cost,
+    public Appointment(int id, Medic medic, LocalDateTime date, int durationMinutes, AppointmentType type, Disease disease, double cost,
                        Clinique clinique, int roomNumber) {
-        this.id = AppointmentUtils.currentId;
-        AppointmentUtils.currentId++;
+        this.id = id;
         this.medic = medic;
         this.date = date;
         this.durationMinutes = durationMinutes;
@@ -45,19 +45,56 @@ public class Appointment {
                 '}';
     }
 
+
+    public int getId() {
+        return id;
+    }
+
     public Medic getMedic() {
         return medic;
     }
 
-    public int getId() {
-        return id;
+    public LocalDateTime getDate() {
+        return date;
     }
 
     public int getDurationMinutes() {
         return durationMinutes;
     }
 
+    public AppointmentType getType() {
+        return type;
+    }
+
+    public Disease getDisease() {
+        return disease;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public Clinique getClinique() {
+        return clinique;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
     public void setDate(LocalDateTime newDate) {
         this.date = newDate;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }

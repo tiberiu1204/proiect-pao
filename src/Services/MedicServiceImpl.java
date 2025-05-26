@@ -1,27 +1,31 @@
 package src.Services;
 
+import src.Config.DatabaseConfiguration;
 import src.Entities.*;
 import src.Entities.Calendar;
-import src.Repository.AppointmentRepo;
-import src.Repository.MedicRepo;
-import src.Repository.PatientRepo;
+import src.Repositories.MedicRepo;
+import src.Repositories.PatientRepo;
 
-import java.sql.SQLInvalidAuthorizationSpecException;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class MedicServiceImpl implements MedicService {
+    private final DatabaseConfiguration db;
+    public MedicServiceImpl(DatabaseConfiguration db) {
+        this.db = db;
+    }
     @Override
     public boolean checkAvailability(Medic medic, int durationMinutes, LocalDateTime date) {
         return medic.getCalendar().dateAvailable(date, durationMinutes);
     }
 
     @Override
-    public ArrayList<Patient> getAllPatients(Medic medic, PatientRepo patientRepo) {
+    public ArrayList<Patient> getAllPatients(Medic medic, PatientRepo patientRepo) throws SQLException {
         ArrayList<Patient> queryResult = new ArrayList<>();
-        ArrayList<Patient> patients = patientRepo.getPatients();
+        ArrayList<Patient> patients = patientRepo.readAll();
         for(Patient patient : patients) {
             MedFile medFile = patient.getMedFile();
             for(Appointment appointment : medFile.getAppointmentHistory()) {
@@ -37,9 +41,9 @@ public class MedicServiceImpl implements MedicService {
     }
 
     @Override
-    public ArrayList<Appointment> getAllAppointments(Medic medic, PatientRepo patientRepo) {
+    public ArrayList<Appointment> getAllAppointments(Medic medic, PatientRepo patientRepo) throws SQLException {
         ArrayList<Appointment> queryResult = new ArrayList<>();
-        for(Patient patient : patientRepo.getPatients()) {
+        for(Patient patient : patientRepo.readAll()) {
             ArrayList<Appointment> appointmentHistory = patient.getMedFile().getAppointmentHistory();
             for(Appointment appointment : appointmentHistory) {
                 if(appointment.getMedic().getEmail() == medic.getEmail()) {
@@ -51,9 +55,9 @@ public class MedicServiceImpl implements MedicService {
     }
 
     @Override
-    public ArrayList<Medic> getAllMedics() {
-        MedicRepo medicRepo = new MedicRepo();
-        ArrayList<Medic> medics = medicRepo.getMedics();
+    public ArrayList<Medic> getAllMedics() throws SQLException {
+        MedicRepo medicRepo = new MedicRepo(db);
+        ArrayList<Medic> medics = medicRepo.readAll();
         Collections.sort(medics);
         return medics;
     }

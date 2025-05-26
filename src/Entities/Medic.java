@@ -11,9 +11,9 @@ public class Medic extends Person {
     private int yearsOfExperience;
     private Calendar calendar;
 
-    public Medic(String firstName, String lastName, int age, Date birth, String phoneNumber, String email,
+    public Medic(int id, String firstName, String lastName, int age, Date birth, String phoneNumber, String email,
                  String address, Specialization specialization, int yearsOfExperience, Calendar calendar) {
-        super(firstName, lastName, age, birth, phoneNumber, email, address);
+        super(id, firstName, lastName, age, birth, phoneNumber, email, address);
         this.specialization = specialization;
         this.yearsOfExperience = yearsOfExperience;
         this.calendar = calendar;
@@ -31,5 +31,13 @@ public class Medic extends Person {
     public String toString() {
         return super.toString() + ", " + yearsOfExperience +
                 " years of experience, specialized in " + specialization;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public int getYearsOfExperience() {
+        return yearsOfExperience;
     }
 }

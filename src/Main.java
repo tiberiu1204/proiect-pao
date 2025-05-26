@@ -1,23 +1,29 @@
+package src;
+
+import src.Config.DatabaseConfiguration;
+import src.Constants.Constants;
 import src.Entities.*;
-import src.Repository.DiseaseRepo;
-import src.Repository.MedicRepo;
-import src.Repository.PatientRepo;
+import src.Repositories.DiseaseRepo;
+import src.Repositories.MedicRepo;
+import src.Repositories.PatientRepo;
 import src.Services.*;
 import src.Utils.AppointmentType;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class Main {
-    public static void main(String[] args) {
-        CliniqueService cliniqueService = new CliniqueServiceImpl();
+    public static void main(String[] args) throws SQLException {
+        DatabaseConfiguration db = new DatabaseConfiguration(Constants.DATABASE_CREDENTIALS);
+        CliniqueService cliniqueService = new CliniqueServiceImpl(db);
         for(Clinique clinique : cliniqueService.getAllCliniques()) {
             System.out.println(clinique);
         }
-        MedicService medicService = new MedicServiceImpl();
-        MedicRepo medicRepo = new MedicRepo();
-        PatientRepo patientRepo = new PatientRepo();
-        Medic medic = medicRepo.getMedics().get(1);
+        MedicService medicService = new MedicServiceImpl(db);
+        MedicRepo medicRepo = new MedicRepo(db);
+        PatientRepo patientRepo = new PatientRepo(db);
+        Medic medic = medicRepo.readAll().get(1);
         if(medicService.checkAvailability(medic, 45, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).plusDays(2).minusHours(1))) {
             System.out.println("Medic " + medic + " is available.");
         }
@@ -38,10 +44,10 @@ public class Main {
         }
         System.out.println("First available timeframe for " + medic);
         System.out.println(medicService.getFirstAvailableTimeFrame(medic, 70));
-        PatientService patientService = new PatientServiceImpl();
-        DiseaseRepo diseaseRepo = new DiseaseRepo();
-        Disease disease = diseaseRepo.getDiseases().get(0);
-        Patient patient = patientRepo.getPatients().get(1);
+        PatientService patientService = new PatientServiceImpl(db);
+        DiseaseRepo diseaseRepo = new DiseaseRepo(db);
+        Disease disease = diseaseRepo.readAll().get(0);
+        Patient patient = patientRepo.readAll().get(1);
         System.out.println(patientService.makeAppointment(medic, patient, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
                 45, AppointmentType.CONSULTATION, disease, 100.00, cliniqueService.getAllCliniques().get(1), 10));
         System.out.println(patientService.modifyAppointment(patient, 1, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)));
