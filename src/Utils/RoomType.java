@@ -3,7 +3,8 @@ package src.Utils;
 public enum RoomType {
     CONSULTATION,
     TREATMENT,
-    SURGERY,
+    OPERATING,
     EXAMINATION,
+    EMERGENCY,
     WAITING_ROOM
 }

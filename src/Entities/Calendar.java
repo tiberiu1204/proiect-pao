@@ -25,6 +25,12 @@ public class Calendar {
         this.appointedDates.put(date.truncatedTo(ChronoUnit.MINUTES), durationMinutes);
     }
 
+    public void modifyCalendar(LocalDateTime oldDate, LocalDateTime newDate) {
+        int durationMinutes = appointedDates.get(oldDate);
+        appointedDates.remove(oldDate);
+        appointedDates.put(newDate, durationMinutes);
+    }
+
     public int getStartHour() {
         return startHour;
     }
@@ -87,5 +93,9 @@ public class Calendar {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void removeAppointment(LocalDateTime date) {
+        appointedDates.remove(date);
     }
 }

@@ -23,6 +23,10 @@ public class Medic extends Person {
         calendar.makeAppointment(date, durationMinutes);
     }
 
+    public void modifyAppointment(LocalDateTime oldDate, LocalDateTime newDate) {
+        calendar.modifyCalendar(oldDate, newDate);
+    }
+
     public Calendar getCalendar() {
         return calendar;
     }
@@ -39,5 +43,9 @@ public class Medic extends Person {
 
     public int getYearsOfExperience() {
         return yearsOfExperience;
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        calendar.removeAppointment(appointment.getDate());
     }
 }

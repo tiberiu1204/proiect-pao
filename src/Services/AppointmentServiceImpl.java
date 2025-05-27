@@ -9,7 +9,6 @@ import src.Utils.AppointmentType;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import src.Repositories.AppointmentRepo;
 
 public class AppointmentServiceImpl implements AppointmentService {
     private final DatabaseConfiguration db;
@@ -17,12 +16,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         this.db = db;
     }
     public Appointment createAppointmentWithMedic(Medic medic, LocalDateTime date, int durationMinutes, AppointmentType type,
-                                                  Disease disease, double cost, Clinique clinique, int roomNumber) throws SQLException {
-        AppointmentRepo apptRepo = new AppointmentRepo(db);
+                                                  Disease disease, double cost, Clinique clinique, int roomNumber, int patientId) throws SQLException {
         MedicService medicService = new MedicServiceImpl(db);
         if(medicService.checkAvailability(medic, durationMinutes, date)) {
-            Appointment appt = new Appointment(-1, medic, date, durationMinutes, type, disease, cost, clinique, roomNumber);
-            apptRepo.create(appt);
+            Appointment appt = new Appointment(-1, medic, date, durationMinutes, type, disease, cost, clinique, roomNumber, patientId);
             return appt;
         }
         return null;

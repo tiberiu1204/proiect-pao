@@ -15,4 +15,7 @@ public interface MedicService {
     public ArrayList<Appointment> getAllAppointments(Medic medic, PatientRepo patientRepo) throws SQLException;
     public ArrayList<Medic> getAllMedics() throws SQLException;
     public LocalDateTime getFirstAvailableTimeFrame(Medic medic, int durationMinutes);
+    public void makeAppointment(Medic medic, LocalDateTime date, int durationMinutes) throws SQLException;
+    public void modifyAppointment(Medic medic, LocalDateTime oldDate, LocalDateTime newDate) throws SQLException;
+    public void removeAppointment(Medic medic, Appointment appointment) throws SQLException;
 }

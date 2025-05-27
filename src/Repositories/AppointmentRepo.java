@@ -15,14 +15,12 @@ import java.util.ArrayList;
 public class AppointmentRepo {
     private final DatabaseConfiguration dbConfig;
     private final MedicRepo medicRepo;
-    private final PatientRepo patientRepo;
     private final DiseaseRepo diseaseRepo;
     private final CliniqueRepo cliniqueRepo;
 
     public AppointmentRepo(DatabaseConfiguration dbConfig) {
         this.dbConfig     = dbConfig;
         this.medicRepo    = new MedicRepo(dbConfig);
-        this.patientRepo  = new PatientRepo(dbConfig);
         this.diseaseRepo  = new DiseaseRepo(dbConfig);
         this.cliniqueRepo = new CliniqueRepo(dbConfig);
     }
@@ -37,8 +35,7 @@ public class AppointmentRepo {
         try (PreparedStatement ps = conn.prepareStatement(
                 sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, a.getMedic().getId());
-            if (a.getPatient() != null) ps.setInt(2, a.getPatient().getId());
-            else                         ps.setNull(2, Types.INTEGER);
+            ps.setInt(2, a.getPatientId());
             ps.setTimestamp(3, Timestamp.valueOf(a.getDate()));
             ps.setInt(4, a.getDurationMinutes());
             ps.setString(5, a.getType().name());
@@ -67,7 +64,6 @@ public class AppointmentRepo {
             while (rs.next()) {
                 int id        = rs.getInt("id");
                 Medic medic   = medicRepo.readById(rs.getInt("medic_id"));
-                Patient pat   = patientRepo.readById(rs.getInt("patient_id"));
                 LocalDateTime dt   = rs.getTimestamp("date_time").toLocalDateTime();
                 int duration       = rs.getInt("duration_minutes");
                 AppointmentType t  = AppointmentType.valueOf(rs.getString("type"));
@@ -75,11 +71,11 @@ public class AppointmentRepo {
                 double cost        = rs.getDouble("cost");
                 Clinique cliq      = cliniqueRepo.readById(rs.getInt("clinique_id"));
                 int roomNum        = rs.getInt("room_number");
+                int patientId      = rs.getInt("patient_id");
 
                 Appointment a = new Appointment(
-                        id, medic, dt, duration, t, disease, cost, cliq, roomNum
+                        id, medic, dt, duration, t, disease, cost, cliq, roomNum, patientId
                 );
-                if (pat != null) a.setPatient(pat);
                 list.add(a);
             }
         } finally {
@@ -97,7 +93,6 @@ public class AppointmentRepo {
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) return null;
                 Medic medic   = medicRepo.readById(rs.getInt("medic_id"));
-                Patient pat   = patientRepo.readById(rs.getInt("patient_id"));
                 LocalDateTime dt   = rs.getTimestamp("date_time").toLocalDateTime();
                 int duration       = rs.getInt("duration_minutes");
                 AppointmentType t  = AppointmentType.valueOf(rs.getString("type"));
@@ -105,11 +100,11 @@ public class AppointmentRepo {
                 double cost        = rs.getDouble("cost");
                 Clinique cliq      = cliniqueRepo.readById(rs.getInt("clinique_id"));
                 int roomNum        = rs.getInt("room_number");
+                int patientId      = rs.getInt("patient_id");
 
                 Appointment a = new Appointment(
-                        id, medic, dt, duration, t, disease, cost, cliq, roomNum
+                        id, medic, dt, duration, t, disease, cost, cliq, roomNum, patientId
                 );
-                if (pat != null) a.setPatient(pat);
                 return a;
             }
         } finally {
@@ -126,8 +121,7 @@ public class AppointmentRepo {
         Connection conn = dbConfig.getConnection();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, a.getMedic().getId());
-            if (a.getPatient() != null) ps.setInt(2, a.getPatient().getId());
-            else                         ps.setNull(2, Types.INTEGER);
+            ps.setInt(2, a.getPatientId());
             ps.setTimestamp(3, Timestamp.valueOf(a.getDate()));
             ps.setInt(4, a.getDurationMinutes());
             ps.setString(5, a.getType().name());

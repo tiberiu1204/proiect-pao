@@ -23,7 +23,7 @@ public class Main {
         MedicService medicService = new MedicServiceImpl(db);
         MedicRepo medicRepo = new MedicRepo(db);
         PatientRepo patientRepo = new PatientRepo(db);
-        Medic medic = medicRepo.readAll().get(1);
+        Medic medic = medicRepo.readAll().getFirst();
         if(medicService.checkAvailability(medic, 45, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).plusDays(2).minusHours(1))) {
             System.out.println("Medic " + medic + " is available.");
         }
@@ -46,10 +46,10 @@ public class Main {
         System.out.println(medicService.getFirstAvailableTimeFrame(medic, 70));
         PatientService patientService = new PatientServiceImpl(db);
         DiseaseRepo diseaseRepo = new DiseaseRepo(db);
-        Disease disease = diseaseRepo.readAll().get(0);
-        Patient patient = patientRepo.readAll().get(1);
+        Disease disease = diseaseRepo.readAll().getFirst();
+        Patient patient = patientRepo.readAll().getFirst();
         System.out.println(patientService.makeAppointment(medic, patient, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
-                45, AppointmentType.CONSULTATION, disease, 100.00, cliniqueService.getAllCliniques().get(1), 10));
+                45, AppointmentType.CONSULTATION, disease, 100.00, cliniqueService.getAllCliniques().getFirst(), 10));
         System.out.println(patientService.modifyAppointment(patient, 1, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)));
         System.out.println(patientService.getAllAppointments(patient));
         patientService.cancelAppointment(patient, 1);

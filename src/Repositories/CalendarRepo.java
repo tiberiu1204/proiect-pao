@@ -131,7 +131,6 @@ public class CalendarRepo {
         }
     }
 
-    /** Delete by PK */
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM calendars WHERE id = ?";
         Connection c = db.getConnection();

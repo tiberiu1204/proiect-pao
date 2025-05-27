@@ -3,6 +3,7 @@ package src.Services;
 import src.Config.DatabaseConfiguration;
 import src.Entities.*;
 import src.Entities.Calendar;
+import src.Repositories.CalendarRepo;
 import src.Repositories.MedicRepo;
 import src.Repositories.PatientRepo;
 
@@ -14,8 +15,10 @@ import java.util.*;
 
 public class MedicServiceImpl implements MedicService {
     private final DatabaseConfiguration db;
+    private final CalendarRepo calendarRepo;
     public MedicServiceImpl(DatabaseConfiguration db) {
         this.db = db;
+        calendarRepo = new CalendarRepo(db);
     }
     @Override
     public boolean checkAvailability(Medic medic, int durationMinutes, LocalDateTime date) {
@@ -128,5 +131,22 @@ public class MedicServiceImpl implements MedicService {
                 return pointer;
             }
         }
+    }
+
+    @Override
+    public void makeAppointment(Medic medic, LocalDateTime date, int durationMinutes) throws SQLException {
+        medic.makeAppointment(date, durationMinutes);
+        calendarRepo.update(medic.getCalendar());
+    }
+
+    @Override
+    public void modifyAppointment(Medic medic, LocalDateTime oldDate, LocalDateTime newDate) throws SQLException {
+        medic.modifyAppointment(oldDate, newDate);
+        calendarRepo.update(medic.getCalendar());
+    }
+
+    @Override
+    public void removeAppointment(Medic medic, Appointment appointment) throws SQLException {
+       medic.removeAppointment(appointment);
     }
 }

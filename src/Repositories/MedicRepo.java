@@ -1,6 +1,7 @@
 package src.Repositories;
 
 import src.Config.DatabaseConfiguration;
+import src.Entities.Calendar;
 import src.Entities.Medic;
 import src.Entities.Person;
 import src.Utils.Specialization;
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 public class MedicRepo {
     private final DatabaseConfiguration dbConfig;
     private final PersonRepo personRepo;
+    private final CalendarRepo calendarRepo;
 
     public MedicRepo(DatabaseConfiguration dbConfig) {
         this.dbConfig   = dbConfig;
         this.personRepo = new PersonRepo(dbConfig);
+        this.calendarRepo = new CalendarRepo(dbConfig);
     }
 
     // CREATE (person must exist already)
@@ -42,9 +45,12 @@ public class MedicRepo {
                 int id     = rs.getInt("id");
                 String s   = rs.getString("specialization");
                 int years  = rs.getInt("years_experience");
+                int calendarId = rs.getInt("calendar_id");
 
                 // load Person data
                 Person base = personRepo.readById(id);
+                // load calendar data
+                Calendar calendar = calendarRepo.readById(calendarId);
                 Medic m = new Medic(
                         id,
                         base.getFirstName(),
@@ -56,7 +62,7 @@ public class MedicRepo {
                         base.getAddress(),
                         Specialization.valueOf(s),
                         years,
-                        null    // Calendar managed separately
+                        calendar
                 );
                 list.add(m);
             }
@@ -75,6 +81,8 @@ public class MedicRepo {
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) return null;
                 Person base = personRepo.readById(id);
+                int calendarId = rs.getInt("calendar_id");
+                Calendar calendar = calendarRepo.readById(calendarId);
                 return new Medic(
                         id,
                         base.getFirstName(),
@@ -82,11 +90,10 @@ public class MedicRepo {
                         base.getAge(),
                         base.getBirth(),
                         base.getPhoneNumber(),
-                        (String) base.getEmail(),
-                        base.getAddress(),
+                        (String) base.getEmail(), base.getAddress(),
                         Specialization.valueOf(rs.getString("specialization")),
                         rs.getInt("years_experience"),
-                        null
+                        calendar
                 );
             }
         } finally {

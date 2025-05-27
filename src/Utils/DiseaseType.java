@@ -8,6 +8,7 @@ public enum DiseaseType {
     HEREDITARY,
     AUTOIMMUNE,
     DEGENERATIVE,
-    TRAUMATIC,
+    TRAUMA,
+    VIRAL,
     OTHER
 }

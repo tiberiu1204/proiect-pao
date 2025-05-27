@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public class Appointment {
     private int id;
     private Medic medic;
-    private Patient patient;
     private LocalDateTime date;
     private int durationMinutes;
     private AppointmentType type;
@@ -16,9 +15,10 @@ public class Appointment {
     private double cost;
     Clinique clinique;
     int roomNumber;
+    int patientId;
 
     public Appointment(int id, Medic medic, LocalDateTime date, int durationMinutes, AppointmentType type, Disease disease, double cost,
-                       Clinique clinique, int roomNumber) {
+                       Clinique clinique, int roomNumber, int patientId) {
         this.id = id;
         this.medic = medic;
         this.date = date;
@@ -28,6 +28,7 @@ public class Appointment {
         this.cost = cost;
         this.clinique = clinique;
         this.roomNumber = roomNumber;
+        this.patientId = patientId;
     }
 
     @Override
@@ -86,15 +87,11 @@ public class Appointment {
         this.date = newDate;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public int getPatientId() {
+        return patientId;
     }
 }
