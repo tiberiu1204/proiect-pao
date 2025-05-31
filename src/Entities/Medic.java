@@ -48,4 +48,12 @@ public class Medic extends Person {
     public void removeAppointment(Appointment appointment) {
         calendar.removeAppointment(appointment.getDate());
     }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
+    }
+
+    public void setYearsOfExperience(int yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
 }

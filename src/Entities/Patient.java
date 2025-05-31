@@ -24,4 +24,8 @@ public class Patient extends Person {
     public boolean isInsured() {
         return insured;
     }
+
+    public void setInsured(boolean insured) {
+        this.insured = insured;
+    }
 }

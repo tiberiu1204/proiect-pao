@@ -6,7 +6,10 @@ import src.Entities.Calendar;
 import src.Repositories.CalendarRepo;
 import src.Repositories.MedicRepo;
 import src.Repositories.PatientRepo;
+import src.Repositories.PersonRepo;
+import src.Utils.Specialization;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -16,17 +19,25 @@ import java.util.*;
 public class MedicServiceImpl implements MedicService {
     private final DatabaseConfiguration db;
     private final CalendarRepo calendarRepo;
+    private final MedicRepo medicRepo;
+    private final PersonRepo personRepo;
+    private final PatientRepo patientRepo;
     public MedicServiceImpl(DatabaseConfiguration db) {
         this.db = db;
         calendarRepo = new CalendarRepo(db);
+        medicRepo = new MedicRepo(db);
+        personRepo = new PersonRepo(db);
+        patientRepo = new PatientRepo(db);
     }
     @Override
-    public boolean checkAvailability(Medic medic, int durationMinutes, LocalDateTime date) {
+    public boolean checkAvailability(Medic medic, int durationMinutes, LocalDateTime date) throws IOException {
+        AuditService.log("MedicService:checkAvailability");
         return medic.getCalendar().dateAvailable(date, durationMinutes);
     }
 
     @Override
-    public ArrayList<Patient> getAllPatients(Medic medic, PatientRepo patientRepo) throws SQLException {
+    public ArrayList<Patient> getAllPatients(Medic medic, PatientRepo patientRepo) throws SQLException, IOException {
+        AuditService.log("MedicService:getAllPatients");
         ArrayList<Patient> queryResult = new ArrayList<>();
         ArrayList<Patient> patients = patientRepo.readAll();
         for(Patient patient : patients) {
@@ -44,7 +55,8 @@ public class MedicServiceImpl implements MedicService {
     }
 
     @Override
-    public ArrayList<Appointment> getAllAppointments(Medic medic, PatientRepo patientRepo) throws SQLException {
+    public ArrayList<Appointment> getAllAppointments(Medic medic) throws SQLException, IOException {
+        AuditService.log("MedicService:getAllAppointments");
         ArrayList<Appointment> queryResult = new ArrayList<>();
         for(Patient patient : patientRepo.readAll()) {
             ArrayList<Appointment> appointmentHistory = patient.getMedFile().getAppointmentHistory();
@@ -58,7 +70,8 @@ public class MedicServiceImpl implements MedicService {
     }
 
     @Override
-    public ArrayList<Medic> getAllMedics() throws SQLException {
+    public ArrayList<Medic> getAllMedics() throws SQLException, IOException {
+        AuditService.log("MedicService:getAllMedics");
         MedicRepo medicRepo = new MedicRepo(db);
         ArrayList<Medic> medics = medicRepo.readAll();
         Collections.sort(medics);
@@ -66,7 +79,8 @@ public class MedicServiceImpl implements MedicService {
     }
 
     @Override
-    public LocalDateTime getFirstAvailableTimeFrame(Medic medic, int durationMinutes) {
+    public LocalDateTime getFirstAvailableTimeFrame(Medic medic, int durationMinutes) throws IOException {
+        AuditService.log("MedicService:getFirstAvailableTimeFrame");
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         Calendar calendar = medic.getCalendar();
         HashMap<LocalDateTime, Integer> appointedDates = calendar.getAppointedDates();
@@ -148,5 +162,36 @@ public class MedicServiceImpl implements MedicService {
     @Override
     public void removeAppointment(Medic medic, Appointment appointment) throws SQLException {
        medic.removeAppointment(appointment);
+    }
+
+    @Override
+    public Medic createMedic(String firstName, String lastName, int age, Date birth, String phoneNumber, String email,
+                            String address, Specialization specialization, int yearsOfExperience, Calendar calendar) throws SQLException {
+        Medic medic = new Medic(-1, firstName, lastName, age, birth, phoneNumber, email, address, specialization, yearsOfExperience, calendar);
+        calendarRepo.create(calendar);
+        personRepo.create(medic);
+        medicRepo.create(medic);
+        return medic;
+    }
+
+    @Override
+    public Medic updateMedic(Medic medic, int age, int yearsOfExperience, Specialization specialization) throws SQLException {
+        medic.setAge(age);
+        medic.setSpecialization(specialization);
+        medic.setYearsOfExperience(yearsOfExperience);
+        medicRepo.update(medic);
+        personRepo.update(medic);
+        return medic;
+    }
+
+    @Override
+    public void deleteMedic(Medic medic) throws SQLException, IOException {
+        ArrayList<Appointment> appointments = this.getAllAppointments(medic);
+        for(Appointment appt : appointments) {
+            PatientService patientService = new PatientServiceImpl(this.db);
+            Patient patient = patientRepo.readById(appt.getPatientId());
+            patientService.cancelAppointment(patient, appt.getId());
+        }
+        medicRepo.delete(medic.getId());
     }
 }

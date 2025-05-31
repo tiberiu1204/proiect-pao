@@ -1,7 +1,3 @@
-/* -------------------------------------------------------------------------- */
-/*  Run this in MariaDB 10.5+ (or MySQL 8+)                                   */
-/* -------------------------------------------------------------------------- */
-
 DROP DATABASE IF EXISTS proiect_pao;
 CREATE DATABASE proiect_pao CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE proiect_pao;
@@ -111,10 +107,10 @@ CREATE TABLE appointments (
     cost              DOUBLE,
     clinique_id       INT,
     room_number       INT,
-    CONSTRAINT fk_appt_medic     FOREIGN KEY (medic_id)   REFERENCES medics(id),
-    CONSTRAINT fk_appt_patient   FOREIGN KEY (patient_id)  REFERENCES patients(id),
-    CONSTRAINT fk_appt_disease   FOREIGN KEY (disease_id) REFERENCES diseases(id),
-    CONSTRAINT fk_appt_clinique  FOREIGN KEY (clinique_id)REFERENCES cliniques(id)
+    CONSTRAINT fk_appt_medic     FOREIGN KEY (medic_id)   REFERENCES medics(id) ON DELETE CASCADE,
+    CONSTRAINT fk_appt_patient   FOREIGN KEY (patient_id)  REFERENCES patients(id) ON DELETE CASCADE,
+    CONSTRAINT fk_appt_disease   FOREIGN KEY (disease_id) REFERENCES diseases(id) ON DELETE CASCADE,
+    CONSTRAINT fk_appt_clinique  FOREIGN KEY (clinique_id)REFERENCES cliniques(id) ON DELETE CASCADE
 );
 
 /* -------------------------------------------------------------------------- */
@@ -178,4 +174,3 @@ INSERT INTO appointments (id, medic_id, patient_id, date_time,           duratio
   (1, 1,        2,          '2025-06-06 10:30:00', 30,               'CHECKUP',    1,          250.00, 1,           101),
   (2, 3,        4,          '2025-07-01 09:00:00', 60,               'FOLLOW_UP',  2,          150.00, 2,           110),
   (3, 5,        6,          '2025-08-15 11:15:00', 45,               'SURGERY',    3,         1200.00, 3,            1);
-select * from medics;

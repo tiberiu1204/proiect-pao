@@ -8,13 +8,19 @@ import src.Repositories.MedicRepo;
 import src.Repositories.PatientRepo;
 import src.Services.*;
 import src.Utils.AppointmentType;
+import src.Utils.Specialization;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
         DatabaseConfiguration db = new DatabaseConfiguration(Constants.DATABASE_CREDENTIALS);
         CliniqueService cliniqueService = new CliniqueServiceImpl(db);
         for(Clinique clinique : cliniqueService.getAllCliniques()) {
@@ -35,7 +41,7 @@ public class Main {
             System.out.println(m);
         }
         System.out.println("All appointments for medic " + medic);
-        for(Appointment appointment : medicService.getAllAppointments(medic, patientRepo)) {
+        for(Appointment appointment : medicService.getAllAppointments(medic)) {
             System.out.println(appointment);
         }
         System.out.println("All patients for medic " + medic );
@@ -54,5 +60,16 @@ public class Main {
         System.out.println(patientService.getAllAppointments(patient));
         patientService.cancelAppointment(patient, 1);
         System.out.println(patientService.getAllAppointments(patient));
+        Clinique newClinique = cliniqueService.createClinique("Spitalul Universitar", "Bucuresti", new ArrayList<>());
+        System.out.println(newClinique);
+        System.out.println(cliniqueService.updateCliniqueName(newClinique, "Spitalul Nume Creativ"));
+        cliniqueService.removeClinique(newClinique);
+        Medic newMedic = medicService.createMedic("Gigel", "Costel", 30, new Date(), "0712123123", "gigel.costel@gmail.com", "Bucuresti", Specialization.CARDIOLOGY, 1, new Calendar(-1, 8, 16, new ArrayList<>(), new HashMap<>()));
+        System.out.println(newMedic);
+        System.out.println(medicService.updateMedic(newMedic, 31, 2, medic.getSpecialization()));
+        medicService.deleteMedic(medic);
+        Patient newPatient = patientService.createPatient("Costel", "Gigel", 30, new Date(), "0712123124", "costel.gigel@gmail.com", "Bucuresti", false, new MedFile(-1, new ArrayList<>(), new Date()));
+        System.out.println(patientService.updatePatient(newPatient, 31, true).getAge());
+        patientService.deletePatient(newPatient);
     }
 }

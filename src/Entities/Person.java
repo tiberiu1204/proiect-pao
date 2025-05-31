@@ -76,4 +76,8 @@ public class Person implements Comparable<Person>{
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 }
